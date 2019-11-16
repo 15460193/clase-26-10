@@ -1,0 +1,34 @@
+(deffacts inicio
+    (articulos autos camry yaris tacoma avanza prius)
+    (articulos extras aleron rines rieles canastilla bull-bar)
+    (articulos servicios otro mensual bimestral trimestral)
+    (modelos anios 2014 2015 2016 2017 2018 2019 2020)
+    (pagos efectivo billetes monedas)
+    (pagos tarjeta credito debito)
+    (pagos devolucion defectuoso garantia otro)
+)
+ 
+(defrule compras
+    (se-compra ?objeto)
+    (articulos ?tipo $? ?objeto $?)
+    =>
+    (assert (compra-tipo ?tipo))
+    (printout t "Se ha comprado un oarticulo del area " ?tipo crlf)
+    (printout t "Como se paga?" crlf)
+    (assert (operacion-por (read)))
+)
+ 
+(defrule tipo-operacion
+    (operacion-por ?x)
+    (pagos ?tipo $? ?x $?)
+    =>
+    (assert (realliza-operacion ?tipo ?x))
+    (printout t "La operacion se realiza con " ?x " de tipo " ?tipo crlf)
+)
+ 
+(defrule inicio
+    (initial-fact)
+    =>
+    (printout t "Que se compra? " crlf)
+    (assert (se-compra (read)))
+)
